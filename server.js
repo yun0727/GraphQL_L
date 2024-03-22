@@ -4,10 +4,12 @@ let tweets = [
   {
     id: "1",
     text:"first one!",
+    userId :"2"
   },
   {
     id:"2",
-    text:"seconde one"
+    text:"seconde one",
+    userId:"1"
   }
 ]
 
@@ -62,12 +64,12 @@ const resolvers = {
       return users
     }
   },
-
   Mutation:{
     postTweet(_,{text, userId}){
       const newTweet = {
         id: tweets.length+1,
         text,
+        userId
       };
       tweets.push(newTweet);
       return newTweet
@@ -82,6 +84,16 @@ const resolvers = {
   User:{
     fullName({firstName, lastName}){
       return `${firstName} ${lastName}`
+    }
+  },
+  Tweet:{
+    author ({userId}){
+      const result = users.find((user)=> user.id ===userId)
+      if (!result){
+        console.log("해당 자료가 없습니다.");
+        return null
+      }
+      return result
     }
   }
 }
